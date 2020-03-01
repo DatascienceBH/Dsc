@@ -1,0 +1,48 @@
+# https://medium.com/@dtuk81/confusion-matrix-visualization-fc31e3f30fea
+
+
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import confusion_matrix
+#Fit the model
+logreg = LogisticRegression(C=1e5)
+logreg.fig(X,y)
+#Generate predictions with the model using our X values
+y_pred = logreg.predict(X)
+#Get the confusion matrix
+cf_matrix = confusion_matrix(y, y_pred)
+print(cf_matrix)
+
+import seaborn as sns
+sns.heatmap(cf_matrix, annot=True)
+
+sns.heatmap(cf_matrix/np.sum(cf_matrix), annot=True, 
+            fmt='.2%', cmap='Blues')
+            
+
+labels = [‘True Neg’,’False Pos’,’False Neg’,’True Pos’]
+labels = np.asarray(labels).reshape(2,2)
+sns.heatmap(cf_matrix, annot=labels, fmt=‘’, cmap='Blues')
+
+apply them to the heatmap and show everything at once.
+group_names = [‘True Neg’,’False Pos’,’False Neg’,’True Pos’]
+group_counts = [“{0:0.0f}”.format(value) for value in
+                cf_matrix.flatten()]
+group_percentages = [“{0:.2%}”.format(value) for value in
+                     cf_matrix.flatten()/np.sum(cf_matrix)]
+labels = [f”{v1}\n{v2}\n{v3}” for v1, v2, v3 in
+          zip(group_names,group_counts,group_percentages)]
+labels = np.asarray(labels).reshape(2,2)
+sns.heatmap(cf_matrix, annot=labels, fmt=‘’, cmap='Blues')
+
+
+
+labels = [‘True Neg’,’False Pos’,’False Neg’,’True Pos’]
+categories = [‘Zero’, ‘One’]
+make_confusion_matrix(cf_matrix, 
+                      group_names=labels,
+                      categories=categories, 
+                      cmap=’binary’)
+make_confusion_matrix(cf_matrix_3x3, figsize=(8,6), cbar=False)
+                      
+                      
+                   
